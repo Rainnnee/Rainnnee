@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" role="img" aria-labelledby="title desc">
+<title id="title">The work trail</title>
+<desc id="desc">Public work trail. The saved snapshot predates the daily timeline, which will appear after its next refresh. 0 of 8 completed weeks were active; the current partial week is active. 7 pull requests were merged, 0 received outside review, and — were reviewed by Rain.</desc>
+<style>
+.title{font:700 29px Arial,sans-serif;fill:#173F70}
+.subtitle{font:15px Arial,sans-serif;fill:#315F91;letter-spacing:.5px}
+.label{font:700 14px Arial,sans-serif;fill:#173F70;letter-spacing:.5px}
+.hint{font:13px Arial,sans-serif;fill:#315F91}
+.month{font:700 12px Arial,sans-serif;fill:#315F91;letter-spacing:.7px}
+.big{font:700 42px Arial,sans-serif;fill:#173F70}
+.medium{font:700 31px Arial,sans-serif;fill:#87365F}
+.statlabel{font:700 11px Arial,sans-serif;fill:#315F91;letter-spacing:.35px}
+.barlabel{font:700 11px Arial,sans-serif;fill:#173F70}
+.micro{font:12px Arial,sans-serif;fill:#315F91}
+</style>
+<rect x="1" y="1" width="1118" height="358" rx="22" fill="#FFFAF7" stroke="#C7DBE9" stroke-width="2"/>
+<path d="M28 12h235" stroke="#238BDF" stroke-width="6" stroke-linecap="round"/>
+<path d="M276 12h145" stroke="#E994C1" stroke-width="6" stroke-linecap="round"/>
+<text x="34" y="54" class="title">THE WORK TRAIL</text>
+<text x="36" y="78" class="subtitle">A 90-DAY TRACE · TRACKED PUBLIC REPOSITORIES</text>
+<text x="1082" y="51" text-anchor="end" class="micro">LAST VERIFIED OCT 17, 2026</text>
+<text x="36" y="112" class="label">WORK DAYS</text>
+<text x="36" y="132" class="hint">daily detail will appear</text>
+<text x="36" y="149" class="hint">after the next refresh</text>
+
+
+<text x="465" y="151" text-anchor="middle" class="hint">Daily contribution detail is being initialized.</text>
+<line x1="180" y1="180" x2="744" y2="180" stroke="#C7DBE9" stroke-width="1"/>
+<text x="36" y="211" class="label">PRs MERGED</text>
+<text x="36" y="229" class="hint">one bar = weekly total</text>
+<line x1="180" y1="228" x2="744" y2="228" stroke="#C7DBE9" stroke-width="1"/>
+
+<text x="36" y="272" class="label">REVIEWS WRITTEN</text>
+<text x="36" y="290" class="hint">distinct PRs reviewed</text>
+<line x1="180" y1="289" x2="744" y2="289" stroke="#C7DBE9" stroke-width="1"/>
+
+<text x="36" y="329" class="micro"> · columns begin on Mondays</text>
+<line x1="778" y1="82" x2="778" y2="328" stroke="#C7DBE9" stroke-width="2"/>
+<text x="812" y="107" class="label">CURRENT READOUT</text>
+<text x="811" y="160" class="big">0<tspan font-size="24"> / 8</tspan></text>
+<text x="814" y="183" class="statlabel">ACTIVE COMPLETE WEEKS</text>
+<rect x="810" y="198" width="270" height="28" rx="14" fill="#F7E5EF"/>
+<circle cx="826" cy="212" r="4" fill="#238BDF"/>
+<text x="839" y="216" class="micro">CURRENT PARTIAL WEEK · ACTIVE</text>
+<line x1="810" y1="244" x2="1080" y2="244" stroke="#C7DBE9" stroke-width="1"/>
+<text x="814" y="281" class="medium">7</text>
+<text x="906" y="281" class="medium">0</text>
+<text x="1000" y="281" class="medium">—</text>
+<text x="814" y="301" class="statlabel">MERGED</text>
+<text x="906" y="301" class="statlabel">REVIEWED</text>
+<text x="1000" y="301" class="statlabel">REVIEWS</text>
+<text x="814" y="320" class="micro">PRs · 90d</text>
+<text x="906" y="320" class="micro">by others</text>
+<text x="1000" y="320" class="micro">by Rain</text>
+</svg>

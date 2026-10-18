@@ -147,9 +147,13 @@ def fetch_activity(client: GitHub, repos: list[str], repo_config: dict[str, Any]
     week_start = today - timedelta(days=today.weekday())
     weeks_start = week_start - timedelta(weeks=8)
     pr_start = today - timedelta(days=90)
-    event_days: set[date] = set()
+    activity_days: set[date] = set()
+    commit_days: set[date] = set()
+    merged_by_week: dict[date, int] = {}
+    reviewed_by_week: dict[date, set[tuple[str, int]]] = {}
     merged_total = 0
     reviewed_by_others = 0
+    reviewed_prs: set[tuple[str, int]] = set()
     for repo in repos:
         info, _ = client.get(f"{API}/repos/{repo}")
         if info.get("visibility") != "public" or info.get("private"):
@@ -178,8 +182,8 @@ def fetch_activity(client: GitHub, repos: list[str], repo_config: dict[str, Any]
                 continue
             if not is_meaningful_commit(details.get("files", []), repo_config, commit.get("message", "")):
                 continue
-            if day >= weeks_start:
-                event_days.add(day)
+            activity_days.add(day)
+            commit_days.add(day)
 
         # Search is limited to the recent merged window; matching PRs are fetched
         # once, then their review records establish both collaboration measures.
@@ -199,8 +203,10 @@ def fetch_activity(client: GitHub, repos: list[str], repo_config: dict[str, Any]
             own_pr = user.casefold() == OWNER.casefold()
             if own_pr:
                 merged_total += 1
-                if pr_day and pr_day >= weeks_start:
-                    event_days.add(pr_day)
+                if pr_day:
+                    activity_days.add(pr_day)
+                    bucket = pr_day - timedelta(days=pr_day.weekday())
+                    merged_by_week[bucket] = merged_by_week.get(bucket, 0) + 1
             reviews_url = f"{API}/repos/{repo}/pulls/{number}/reviews?per_page=100"
             reviews = client.pages(reviews_url)
             if not isinstance(reviews, list):
@@ -219,20 +225,23 @@ def fetch_activity(client: GitHub, repos: list[str], repo_config: dict[str, Any]
                     continue
                 if own_pr and reviewer.casefold() != OWNER.casefold() and not (reviewer.endswith("[bot]") or reviewer.casefold().endswith("-bot")) and merged_at and submitted_at < merged_at:
                     qualifying_reviewers.add(reviewer.casefold())
-                if reviewer.casefold() == OWNER.casefold() and pr_start <= submitted_at.astimezone(LOCAL_TZ).date() < today:
-                    own_review_days.add(submitted_at.astimezone(LOCAL_TZ).date())
+                review_day = submitted_at.astimezone(LOCAL_TZ).date()
+                if not own_pr and reviewer.casefold() == OWNER.casefold() and pr_start <= review_day < today:
+                    own_review_days.add(review_day)
+                    reviewed_prs.add((repo.casefold(), number))
+                    bucket = review_day - timedelta(days=review_day.weekday())
+                    reviewed_by_week.setdefault(bucket, set()).add((repo.casefold(), number))
             if own_pr and qualifying_reviewers:
                 reviewed_by_others += 1
             for day in own_review_days:
-                if day >= weeks_start:
-                    event_days.add(day)
+                activity_days.add(day)
 
     weeks = []
     active_count = 0
     for i in range(8):
         start = weeks_start + timedelta(weeks=i)
         end = start + timedelta(days=7)
-        active = any(start <= d < end for d in event_days)
+        active = any(start <= d < end for d in activity_days)
         active_count += int(active)
         weeks.append({
             "start_date": start.isoformat(),
@@ -240,7 +249,21 @@ def fetch_activity(client: GitHub, repos: list[str], repo_config: dict[str, Any]
             "label": start.strftime("%b %-d"),
             "active": active,
         })
-    partial_week_active = any(week_start <= d < today for d in event_days)
+    partial_week_active = any(week_start <= d < today for d in activity_days)
+    timeline_start = pr_start - timedelta(days=pr_start.weekday())
+    timeline_weeks = []
+    for i in range(14):
+        start = timeline_start + timedelta(weeks=i)
+        end = start + timedelta(days=7)
+        timeline_weeks.append({
+            "start_date": start.isoformat(),
+            "end_date_exclusive": end.isoformat(),
+            "label": start.strftime("%b %-d"),
+            "workdays": sorted(d.weekday() for d in activity_days if start <= d < end),
+            "commit_days": sorted(d.weekday() for d in commit_days if start <= d < end),
+            "merged_prs": merged_by_week.get(start, 0),
+            "reviews_written": len(reviewed_by_week.get(start, set())),
+        })
     activity = {
         "active_weeks": {
             "count": active_count,
@@ -249,6 +272,11 @@ def fetch_activity(client: GitHub, repos: list[str], repo_config: dict[str, Any]
             "end_date_exclusive": week_start.isoformat(),
             "weeks": weeks,
         },
+        "activity_timeline_90d": {
+            "start_date": pr_start.isoformat(),
+            "end_date_exclusive": today.isoformat(),
+            "weeks": timeline_weeks,
+        },
         "current_week": {
             "active": partial_week_active,
             "start_date": week_start.isoformat(),
@@ -256,6 +284,7 @@ def fetch_activity(client: GitHub, repos: list[str], repo_config: dict[str, Any]
         },
         "merged_contributions_90d": merged_total,
         "reviewed_by_others_90d": reviewed_by_others,
+        "technical_reviews_90d": len(reviewed_prs),
     }
     window = {"start_date": pr_start.isoformat(), "end_date_exclusive": today.isoformat(), "timezone": "America/Los_Angeles"}
     return activity, window
@@ -358,7 +387,7 @@ def main() -> int:
             "status": "measured",
             "generated_at": generated,
             "timezone": "America/Los_Angeles",
-            "definitions_version": 2,
+            "definitions_version": 3,
             "tracked_repositories": repo_names,
             "window": window,
             "metrics": {

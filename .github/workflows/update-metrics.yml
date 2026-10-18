@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Check out profile repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Refresh public metrics and cards
         env:
@@ -28,12 +28,12 @@ jobs:
 
       - name: Commit refreshed snapshot
         run: |
-          if git diff --quiet -- README.md assets/consistency.svg assets/evidence.svg data/metrics.json data/history.json; then
+          if git diff --quiet -- README.md assets/work-trail.svg assets/proof.svg data/metrics.json data/history.json; then
             echo "No metric changes to commit."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add README.md assets/consistency.svg assets/evidence.svg data/metrics.json data/history.json
+          git add README.md assets/work-trail.svg assets/proof.svg data/metrics.json data/history.json
           git commit -m "chore: refresh public profile metrics"
           git push

@@ -24,7 +24,7 @@ from collect_metrics import (  # noqa: E402
     verified_evidence,
     within,
 )
-from render_metrics import readme_block  # noqa: E402
+from render_metrics import readme_block, work_trail_svg  # noqa: E402
 
 
 class FakeGitHub:
@@ -117,9 +117,15 @@ class MetricRulesTests(unittest.TestCase):
         activity, window = fetch_activity(FakeGitHub(), ["Rainnnee/rainpiao"], config, date(2026, 10, 17))
         self.assertEqual(activity["merged_contributions_90d"], 1)
         self.assertEqual(activity["reviewed_by_others_90d"], 1)
+        self.assertEqual(activity["technical_reviews_90d"], 1)
         self.assertEqual(activity["active_weeks"]["count"], 1)
         self.assertTrue(activity["active_weeks"]["weeks"][-1]["active"])
         self.assertTrue(activity["current_week"]["active"])
+        trail = activity["activity_timeline_90d"]["weeks"]
+        self.assertEqual(len(trail), 14)
+        self.assertEqual(trail[-1]["merged_prs"], 1)
+        self.assertEqual(trail[-1]["reviews_written"], 1)
+        self.assertIn(0, trail[-1]["workdays"])
         self.assertEqual(window["end_date_exclusive"], "2026-10-17")
 
     def test_metrics_copy_uses_inclusive_display_dates_and_singular_project(self) -> None:
@@ -133,6 +139,7 @@ class MetricRulesTests(unittest.TestCase):
                 "current_week": {"active": True},
                 "merged_contributions_90d": 1,
                 "reviewed_by_others_90d": 0,
+                "technical_reviews_90d": 0,
                 "verified_technical_projects": 1,
                 "evaluation_reports": 0,
             },
@@ -144,7 +151,31 @@ class MetricRulesTests(unittest.TestCase):
         rendered = readme_block(data)
         self.assertIn("2026-08-17 through 2026-10-11", rendered)
         self.assertIn("through 2026-10-16", rendered)
-        self.assertIn("1 currently verified project", rendered)
+        self.assertIn("1 currently verified runnable project", rendered)
+        self.assertIn("**Reviews written:** 0", rendered)
+
+    def test_work_trail_uses_weekly_events_and_keeps_sparse_values_honest(self) -> None:
+        data = {
+            "generated_at": "2026-10-17T19:51:39-07:00",
+            "metrics": {
+                "active_weeks": {"count": 0, "total": 8},
+                "current_week": {"active": True},
+                "activity_timeline_90d": {
+                    "start_date": "2026-07-19",
+                    "end_date_exclusive": "2026-10-17",
+                    "weeks": [
+                        {"start_date": "2026-10-12", "workdays": [0, 3], "merged_prs": 7, "reviews_written": 1}
+                    ],
+                },
+                "merged_contributions_90d": 7,
+                "reviewed_by_others_90d": 0,
+                "technical_reviews_90d": 1,
+            },
+        }
+        rendered = work_trail_svg(data)
+        self.assertIn("THE WORK TRAIL", rendered)
+        self.assertIn("CURRENT PARTIAL WEEK", rendered)
+        self.assertIn("days with qualifying commits", rendered)
 
     def test_unmeasured_profile_is_explicitly_distinct_from_zero(self) -> None:
         data = {
@@ -162,7 +193,7 @@ class MetricRulesTests(unittest.TestCase):
         }
         rendered = readme_block(data)
         self.assertIn("Not measured yet", rendered)
-        self.assertIn("zero because the evidence ledger is empty", rendered)
+        self.assertIn("Empty evidence counts are separate from unmeasured activity", rendered)
 
     def test_private_repository_is_refused(self) -> None:
         class PrivateGitHub(FakeGitHub):
@@ -177,8 +208,8 @@ class MetricRulesTests(unittest.TestCase):
     def test_failed_public_fetch_preserves_last_good_generated_files(self) -> None:
         generated_paths = [
             ROOT / "README.md",
-            ROOT / "assets/consistency.svg",
-            ROOT / "assets/evidence.svg",
+            ROOT / "assets/work-trail.svg",
+            ROOT / "assets/proof.svg",
             ROOT / "data/metrics.json",
             ROOT / "data/history.json",
         ]
