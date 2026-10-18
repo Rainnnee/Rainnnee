@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 232" role="img" aria-labelledby="title desc">
+<title id="title">Work you can inspect</title>
+<desc id="desc">Currently verified runnable public technical projects: 0. Public evaluation reports that meet the profile criteria: 0. Last successful collection: Not measured yet.</desc>
+<style>.h{font:700 28px Arial,sans-serif;fill:#173F70}.k{font:16px Arial,sans-serif;fill:#315F91}.v{font:700 58px Arial,sans-serif;fill:#173F70}.small{font:14px Arial,sans-serif;fill:#315F91}</style>
+<rect x="1" y="1" width="1118" height="230" rx="22" fill="#F8FBFE" stroke="#B9D2E4" stroke-width="2"/>
+<path d="M28 12h250" stroke="#238BDF" stroke-width="6" stroke-linecap="round"/><path d="M292 12h170" stroke="#EFACD0" stroke-width="6" stroke-linecap="round"/>
+<text x="36" y="54" class="h">Work you can inspect</text>
+<text x="72" y="139" class="v">0</text><text x="72" y="171" class="k">RUNNABLE TECHNICAL PROJECTS</text>
+<line x1="475" y1="82" x2="475" y2="181" stroke="#D7E2EA" stroke-width="2"/>
+<text x="546" y="139" class="v">0</text><text x="546" y="171" class="k">EVALUATION REPORTS</text>
+<text x="72" y="207" class="small">Counts require public evidence and the documented inclusion criteria.</text>
+<text x="826" y="207" class="small">Last verified Not measured yet</text>
+</svg>

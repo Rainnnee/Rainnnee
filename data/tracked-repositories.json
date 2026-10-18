@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "owner": "Rainnnee",
+  "repositories": [
+    {
+      "full_name": "Rainnnee/rainpiao",
+      "purpose": "Public portfolio source; tracked for qualifying public activity.",
+      "default_branch": "auto"
+    }
+  ],
+  "excluded_repositories": [
+    {
+      "full_name": "Rainnnee/Rainnnee",
+      "reason": "Profile README and generated metric assets must not count toward the custom dashboard."
+    }
+  ],
+  "excluded_path_prefixes": [
+    "vendor/",
+    "third_party/",
+    "node_modules/",
+    "dist/",
+    "build/"
+  ],
+  "dependency_only_filenames": [
+    "package-lock.json",
+    "pnpm-lock.yaml",
+    "yarn.lock",
+    "poetry.lock",
+    "uv.lock",
+    "requirements.txt",
+    "Cargo.lock",
+    "go.sum"
+  ]
+}

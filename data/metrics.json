@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "status": "not_measured_yet",
+  "generated_at": null,
+  "timezone": "America/Los_Angeles",
+  "definitions_version": 2,
+  "tracked_repositories": [
+    "Rainnnee/rainpiao"
+  ],
+  "window": {
+    "start_date": null,
+    "end_date_exclusive": null,
+    "timezone": "America/Los_Angeles"
+  },
+  "metrics": {
+    "active_weeks": {
+      "count": null,
+      "total": 8,
+      "start_date": null,
+      "end_date_exclusive": null,
+      "weeks": []
+    },
+    "current_week": {
+      "active": null,
+      "start_date": null,
+      "as_of_date": null
+    },
+    "merged_contributions_90d": null,
+    "reviewed_by_others_90d": null,
+    "verified_technical_projects": 0,
+    "evaluation_reports": 0
+  },
+  "projects": [],
+  "reports": [],
+  "collector": {
+    "source": "GitHub public REST API"
+  },
+  "evidence_verified_at": null
+}
