@@ -42,12 +42,16 @@ I’ll add course and team repositories as their public implementations are read
 I’m early in building a public record here. The measures below separate work cadence from artifacts a visitor can run or examine; small values are a baseline, not a claim about ability. Private repositories and projects are not included in the counts.
 
 <!-- METRICS-START -->
-<p align="center"><img src="assets/consistency.svg" width="100%" alt="Consistency and collaboration: not measured yet"></p>
-<p align="center"><img src="assets/evidence.svg" width="100%" alt="Work you can inspect: no verified runnable technical projects or qualifying reports yet"></p>
+<p align="center"><img src="assets/consistency.svg" width="100%" alt="Consistency and collaboration metrics"></p>
+<p align="center"><img src="assets/evidence.svg" width="100%" alt="Verified public project and evaluation report counts"></p>
 
-**Tracked public work · Not measured yet** · [Definitions, scope, and evidence](docs/metrics.md)
+- **Active weeks:** 0 of 8 · 2026-08-17 through 2026-10-11 (eight complete local weeks); current partial week: active.
+- **Merged contributions:** 7 in the last 90 complete local days through 2026-10-16; 0 had an approval or changes-requested review from another human before merge · [Pull-request records](https://github.com/Rainnnee/rainpiao/pulls).
+- **Runnable technical projects:** 0 currently verified projects · 0 qualifying evaluation reports.
 
-The first successful public-data collection has not run. The project and report counts are zero because the evidence ledger is empty. A failed refresh keeps the previous snapshot and date.
+**Tracked public work · Last verified Oct 17, 2026** · [Definitions, scope, and evidence](docs/metrics.md)
+
+These custom measures cover only the listed public repositories. The README keeps its last successful snapshot when a refresh fails.
 <!-- METRICS-END -->
 
 **Scope:** custom counts cover the public repositories listed in [`data/tracked-repositories.json`](data/tracked-repositories.json). See [definitions, windows, and evidence rules](docs/metrics.md). The collector keeps the last successful snapshot when a refresh fails.

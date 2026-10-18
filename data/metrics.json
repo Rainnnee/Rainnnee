@@ -1,39 +1,88 @@
 {
   "schema_version": 1,
-  "status": "not_measured_yet",
-  "generated_at": null,
+  "status": "measured",
+  "generated_at": "2026-10-18T06:02:41Z",
   "timezone": "America/Los_Angeles",
   "definitions_version": 2,
   "tracked_repositories": [
     "Rainnnee/rainpiao"
   ],
   "window": {
-    "start_date": null,
-    "end_date_exclusive": null,
+    "start_date": "2026-07-19",
+    "end_date_exclusive": "2026-10-17",
     "timezone": "America/Los_Angeles"
   },
   "metrics": {
     "active_weeks": {
-      "count": null,
+      "count": 0,
       "total": 8,
-      "start_date": null,
-      "end_date_exclusive": null,
-      "weeks": []
+      "start_date": "2026-08-17",
+      "end_date_exclusive": "2026-10-12",
+      "weeks": [
+        {
+          "start_date": "2026-08-17",
+          "end_date_inclusive": "2026-08-23",
+          "label": "Aug 17",
+          "active": false
+        },
+        {
+          "start_date": "2026-08-24",
+          "end_date_inclusive": "2026-08-30",
+          "label": "Aug 24",
+          "active": false
+        },
+        {
+          "start_date": "2026-08-31",
+          "end_date_inclusive": "2026-09-06",
+          "label": "Aug 31",
+          "active": false
+        },
+        {
+          "start_date": "2026-09-07",
+          "end_date_inclusive": "2026-09-13",
+          "label": "Sep 7",
+          "active": false
+        },
+        {
+          "start_date": "2026-09-14",
+          "end_date_inclusive": "2026-09-20",
+          "label": "Sep 14",
+          "active": false
+        },
+        {
+          "start_date": "2026-09-21",
+          "end_date_inclusive": "2026-09-27",
+          "label": "Sep 21",
+          "active": false
+        },
+        {
+          "start_date": "2026-09-28",
+          "end_date_inclusive": "2026-10-04",
+          "label": "Sep 28",
+          "active": false
+        },
+        {
+          "start_date": "2026-10-05",
+          "end_date_inclusive": "2026-10-11",
+          "label": "Oct 5",
+          "active": false
+        }
+      ]
     },
     "current_week": {
-      "active": null,
-      "start_date": null,
-      "as_of_date": null
+      "active": true,
+      "start_date": "2026-10-12",
+      "as_of_date": "2026-10-17"
     },
-    "merged_contributions_90d": null,
-    "reviewed_by_others_90d": null,
+    "merged_contributions_90d": 7,
+    "reviewed_by_others_90d": 0,
     "verified_technical_projects": 0,
     "evaluation_reports": 0
   },
   "projects": [],
   "reports": [],
   "collector": {
+    "api_requests": 34,
     "source": "GitHub public REST API"
-  },
-  "evidence_verified_at": null
+  }
 }
