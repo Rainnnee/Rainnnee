@@ -45,11 +45,19 @@ I work across analysis and software, and I’m always adding to the toolkit. The
 ## 📈 My GitHub, at a glance
 
 <p align="center">
-  <img height="170" src="https://github-stats-extended.vercel.app/api?username=Rainnnee&show_icons=true&hide_rank=true&theme=transparent&include_all_commits=true" alt="GitHub activity summary for Rain Piao">
+  <img height="170" src="https://github-stats-extended.vercel.app/api?username=Rainnnee&show_icons=true&theme=transparent&include_all_commits=true" alt="GitHub stats and activity rank for Rain Piao; the rank reflects public activity, not code quality">
   <img height="170" src="https://github-stats-extended.vercel.app/api/top-langs/?username=Rainnnee&layout=compact&langs_count=6&theme=transparent" alt="Most-used languages across Rain Piao's public repositories">
 </p>
 
-<p align="center"><sub>✨ Live cards summarize public GitHub data. The language card reflects code volume in repositories, so it’s only one small slice of the languages and tools I use.</sub></p>
+<p align="center">
+  <img src="assets/github-activity.svg" alt="Rain Piao's 2026 GitHub contribution calendar and monthly activity summary" width="100%">
+</p>
+
+<p align="center">
+  <img src="https://streak-stats.demolab.com/?user=Rainnnee&theme=transparent&hide_border=true" alt="Rain Piao's GitHub total contributions, current streak, and longest streak">
+</p>
+
+<p align="center"><sub>✨ The stats and streak cards summarize public GitHub activity; the rank is an activity comparison, not a measure of coding ability. The contribution calendar follows the public calendar on my GitHub profile. The language card reflects repository code volume, so it’s only one small slice of the languages and tools I use. 🌱</sub></p>
 
 ## 🔭 What I’m building &amp; exploring
 
