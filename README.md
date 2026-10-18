@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/banner.gif" alt="Pixel-art greeting HI! I'M RAIN PIAO with the math-inspired line Sigma DATA leads to ML, above a Los Angeles skyline framed by asymmetrical palms and broad pink-to-cream gradient clouds drifting across a bright cyan sky" width="100%">
+  <img src="assets/banner-static.png" alt="A still, full-resolution pixel-art Los Angeles skyline beneath bright cyan, pink, and cream clouds, with a pixel-font greeting" width="100%">
 </p>
 
-<p align="center"><a href="assets/banner-static.png">View still banner</a> · Uniform-grid pixel art with gentle cloud drift</p>
+<p align="center"><sub>🎨 Original Los Angeles scene · colors and cloud mood inspired by Xeuphoria</sub></p>
 
 ## Rain Piao
 
