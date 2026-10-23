@@ -2,44 +2,31 @@
   <img src="assets/banner-static.png" alt="Pixel-art Los Angeles skyline beneath pink and blue clouds, with palm trees and a mathematical greeting" width="100%">
 </p>
 
-<p align="center"><sub>🎨 Original Los Angeles scene, with colors and cloud mood inspired by Xeuphoria.</sub></p>
+<p align="right"><sub>Inspired by <a href="https://x.com/wacca005">wacca_わっか</a>’s cover art for <a href="https://music.apple.com/us/album/piano-sessions-reflections/1700905900"><em>Piano Sessions: Reflections</em></a> (Xeuphoria × OneChilledPanda).</sub></p>
 
-<h1 align="center">👋 Hi! I’m ℝain ℙiao 🌧️</h1>
+## 👋 About me
 
-<p align="center"><strong>Turning ℝeal questions into ℙractical code—one experiment, model, and late-night idea at a time. ✨</strong></p>
+I’m studying **Statistics & Data Science and Applied Mathematics at UCLA**, with interests in machine learning, statistical computing, and web development.
 
-<p align="center">📍 UCLA · Statistics &amp; Data Science + Applied Mathematics · Los Angeles, CA</p>
-
-I like the space where math meets making: exploring data, testing a model idea, then writing code that lets someone follow the result. I’ve also learned that understanding machine learning grows a little at a time; small ideas add up. This GitHub is where I put that learning into practice—with teammates, experiments, and code. 🧠🧪💻📈🌱
-
-## 🌟 A little about me
-
-- 🎓 Studying **Statistics & Data Science** and **Applied Mathematics** at UCLA.
-- 🧩 Moving between **front-end** (HTML, CSS, JavaScript), **general-purpose and back-end foundations** (Python, Java, C++), and **statistical computing** (R).
-- 🔭 Working with teammates on **computer vision, statistical detection, and machine learning** projects.
-- 🧠 Exploring **transformers, diffusion models, computer vision, and full-stack software**—learning by building and testing.
-- 🌱 I believe in steady learning: one new idea at a time, until the pieces click.
-- 🤝 Excited to collaborate on thoughtful **open-source, data, and ML** projects.
-- 💬 Ask me about **Python, R, C++, statistical modeling, ML experiments,** or the front-end tools I use.
-- 🏅 **USACO Gold Division** · **ACSL National Champion** (two seasons).
-- 🔗 Find me on [LinkedIn](https://www.linkedin.com/in/its-rain-piao-yay/) or browse my [project notes](https://rainnnee.github.io/rainpiao/#projects).
-
-<p align="center"><code>ℝ = real numbers</code> &nbsp;·&nbsp; <code>ℙ = probability</code> &nbsp;·&nbsp; <code>curiosity → experiments → code</code> ✨</p>
+- 🔭 **Working on:** computer vision and statistical detection with BruinML, and sequential game modeling with ACM AI at UCLA.
+- 🌱 **Learning:** transformers, diffusion models, and full-stack development.
+- 💻 **Coding in:** Python, R, C++, Java, HTML, CSS, and JavaScript.
+- 🤝 **Open to collaborating on:** machine learning experiments, data analysis, and open-source tools.
+- 🏅 **Competitive programming:** USACO Gold Division and ACSL National Champion (two seasons).
+- 💬 **Ask me about:** Python, R, C++, statistical modeling, or ML experiments.
 
 ## 🧰 Languages &amp; tools I use
 
-I work across analysis and software, and I’m always adding to the toolkit. These icons are a snapshot of languages and tools I use or study—not a ranking. 🧭
-
-**🎨 Front end**<br>
+**Front end**<br>
 <img alt="HTML5" src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img alt="CSS" src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111111">
 
-**⚙️ General programming &amp; back-end foundations**<br>
+**Programming &amp; statistical computing**<br>
 <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"> <img alt="Java" src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"> <img alt="C++" src="https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=cplusplus&logoColor=white"> <img alt="R" src="https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white">
 
-**📊 Data &amp; machine learning**<br>
+**Data &amp; machine learning**<br>
 <img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white"> <img alt="NumPy" src="https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white"> <img alt="pandas" src="https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white"> <img alt="scikit-learn" src="https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white"> <img alt="ggplot2" src="https://img.shields.io/badge/ggplot2-4B8BBE?style=for-the-badge&logoColor=white">
 
-**🛠️ Build &amp; explore**<br>
+**Development tools**<br>
 <img alt="Git" src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img alt="GitHub" src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"> <img alt="Linux" src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=111111"> <img alt="Jupyter" src="https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white"> <img alt="LaTeX" src="https://img.shields.io/badge/LaTeX-008080?style=for-the-badge&logo=latex&logoColor=white">
 
 ## 📈 My GitHub, at a glance
@@ -57,30 +44,28 @@ I work across analysis and software, and I’m always adding to the toolkit. The
   <img src="https://streak-stats.demolab.com/?user=Rainnnee&theme=transparent&hide_border=true" alt="Rain Piao's GitHub total contributions, current streak, and longest streak">
 </p>
 
-<p align="center"><sub>✨ The stats and streak cards summarize public GitHub activity; the rank is an activity comparison, not a measure of coding ability. The contribution calendar follows the public calendar on my GitHub profile. The language card reflects repository code volume, so it’s only one small slice of the languages and tools I use. 🌱</sub></p>
+<p align="center"><sub>Based on public GitHub activity. The rank reflects activity, and language percentages reflect repository code volume. The contribution calendar refreshes weekly.</sub></p>
 
 ## 🔭 What I’m building &amp; exploring
 
-- 🖼️ **BruinML · CLIP and computer vision** — Our five-person team studies training-free detection of small unfamiliar image regions that whole-image CLIP scores can miss. I extended a Python Monte Carlo study across **225 combinations** of noise distributions, object geometries, and signal strengths. In one simulated condition, a clipped spatial-scan method raised detection power from **19.9% to 97.7%** at a 5% false-positive target. These are simulation results, not evidence of real-world image performance.
-- 🃏 **ACM AI Projects @ UCLA · sequential game modeling** — Collaborating on a transformer-based model to learn player behavior from game states and actions. The project is in progress, so I’m not claiming predictive results yet.
-- ✍️ **STATS 100A honors · conditional diffusion** — Planning a PyTorch exploration of conditional diffusion for Chinese-character images and how recognizability, noise, and stroke complexity relate. This is at the planning and scaffolding stage; the model has not been implemented or evaluated.
+- **BruinML · CLIP and computer vision** — Studying training-free detection of small unfamiliar image regions with a five-person team. My work includes Python simulations across **225 combinations** of noise distributions, object geometries, and signal strengths to compare statistical detection methods.
+- **ACM AI Projects @ UCLA · sequential game modeling** — Developing a transformer-based model with teammates to study player behavior from sequences of game states and actions. In progress.
+- **STATS 100A honors · conditional diffusion** — Planning a PyTorch study of Chinese-character images, focusing on recognizability, noise, and stroke complexity.
 
-## 🏁 Projects that taught me something
+## 🧩 Other technical work
 
-- 📈 **IMC Prosperity 4** — Built and backtested adaptive mean-reversion strategies in Python, with position limits and end-of-round risk controls. Our four-person team placed in the **top 16% of 18,803 teams** and advanced through Round 3.
-- 🏥 **ASA DataFest at UCLA** — Coordinated a five-person team in a 48-hour healthcare-data challenge; used **R, ggplot2, and Spearman rank correlation** to develop four analyses and present recommendations.
-- 🚗 **LiDAR traffic monitoring** — Implemented **3D breadth-first-search clustering in C++** to identify vehicles in point clouds, form bounding boxes, and track movement across an eight-lane roadway scene.
+- **IMC Prosperity 4** — Python trading strategies, backtesting, and risk controls. Our four-person team reached Round 3 and placed in the **top 16% of 18,803 teams**.
+- **ASA DataFest at UCLA** — Healthcare-data analysis with a five-person team, using **R, ggplot2, and Spearman rank correlation** to examine patient stress, social needs, and care patterns.
+- **LiDAR traffic monitoring** — **C++ breadth-first-search clustering** to identify vehicles in 3D point clouds, form bounding boxes, and track movement.
 
 ## 🗂️ My public repositories
 
 | Repository | What you’ll find |
 | --- | --- |
-| [🌧️ `rainpiao`](https://github.com/Rainnnee/rainpiao) | Front-end project source built with HTML, CSS, and JavaScript. |
-| [👋 `Rainnnee`](https://github.com/Rainnnee/Rainnnee) | This profile README, its artwork, and the little tools that help keep it current. |
+| [`rainpiao`](https://github.com/Rainnnee/rainpiao) | Website source built with HTML, CSS, and JavaScript. |
+| [`Rainnnee`](https://github.com/Rainnnee/Rainnnee) | This README, the banner artwork, and scripts for the contribution calendar. |
 
-## 📬 Find me around the web
+## 📬 Connect
 
 <a href="https://www.linkedin.com/in/its-rain-piao-yay/"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"></a>
 <a href="https://rainnnee.github.io/rainpiao/#projects"><img alt="Project notes" src="https://img.shields.io/badge/Projects-Explore-7B61FF?style=for-the-badge&logo=githubpages&logoColor=white"></a>
-
-<p align="center"><b>Thanks for stopping by—hope you find something useful, interesting, or fun to explore! 👋✨🌱</b></p>
