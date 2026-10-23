@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a small, accurate profile dashboard from GitHub's own calendar."""
+"""Render theme-aware profile stats from public GitHub data."""
 
 from __future__ import annotations
 
@@ -117,80 +117,213 @@ def fetch_calendar(year: int, login: str = LOGIN) -> dict[str, object]:
     return parse_contribution_calendar(document, year)
 
 
-def build_svg(snapshot: dict[str, object], refreshed_at: datetime) -> str:
-    year = int(snapshot["year"])
-    total = int(snapshot["total"])
-    days = snapshot["days"]
-    assert isinstance(days, dict)
-    first_day = date(year, 1, 1)
-    first_sunday = first_day.toordinal() - ((first_day.weekday() + 1) % 7)
-    month_labels: list[str] = []
-    squares: list[str] = []
-    month_sums = [0] * 12
+def api_json(path: str) -> object:
+    """Read public API resources; a workflow token raises the rate limit."""
+    headers = {"User-Agent": "Rainnnee-profile", "Accept": "application/vnd.github+json"}
+    token = os.environ.get("GITHUB_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    request = Request("https://api.github.com" + path, headers=headers)
+    try:
+        with urlopen(request, timeout=30) as response:
+            return json.load(response)
+    except Exception as exc:
+        raise CollectionError(f"Could not read GitHub API resource {path.split('?')[0]}: {exc}") from exc
 
-    for day_text, cell in sorted(days.items()):
-        current = date.fromisoformat(day_text)
-        col = (current.toordinal() - first_sunday) // 7
-        row = (current.weekday() + 1) % 7
-        x, y = 35 + col * 14, 128 + row * 13
-        level, count = int(cell["level"]), int(cell["count"] or 0)
-        month_sums[current.month - 1] += count
-        squares.append(
-            f'<rect x="{x}" y="{y}" width="10" height="10" rx="2" fill="{CELL_COLORS[level]}">'
-            f'<title>{current.isoformat()}: {count} contribution{"s" if count != 1 else ""}</title></rect>'
-        )
-        if current.day == 1:
-            month_labels.append(
-                f'<text x="{x}" y="113" class="month">{html.escape(current.strftime("%b"))}</text>'
-            )
 
-    max_month = max(month_sums, default=0) or 1
-    monthly_bars: list[str] = []
-    baseline, max_bar_height = 306, 25
-    for index, count in enumerate(month_sums):
-        x = 52 + index * 57
-        height = round(count / max_month * max_bar_height) if count else 2
-        color = "#E994C1" if index >= refreshed_at.month - 1 else "#4A9FE0"
-        monthly_bars.append(
-            f'<rect x="{x}" y="{baseline-height}" width="26" height="{height}" rx="4" fill="{color}">'
-            f'<title>{date(year, index+1, 1).strftime("%B")}: {count} contributions</title></rect>'
-            f'<text x="{x+13}" y="326" text-anchor="middle" class="month">{date(year, index+1, 1).strftime("%b")}</text>'
-        )
+def fetch_public_stats(login: str = LOGIN) -> dict[str, object]:
+    from urllib.parse import urlencode
 
-    refreshed = refreshed_at.astimezone(TIMEZONE).strftime("%b %-d, %Y")
-    description = f"GitHub contribution calendar for {year}: {total} contributions. Activity is shown day by day, with monthly totals below. Refreshed {refreshed}."
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 350" role="img" aria-labelledby="title desc">
-<title id="title">Rain Piao's GitHub activity in {year}</title>
+    profile = api_json(f"/users/{login}")
+    if not isinstance(profile, dict) or profile.get("login", "").lower() != login.lower():
+        raise CollectionError("GitHub returned an unexpected user")
+    repositories = []
+    page = 1
+    while True:
+        batch = api_json(f"/users/{login}/repos?per_page=100&type=owner&page={page}")
+        if not isinstance(batch, list):
+            raise CollectionError("GitHub returned an unreadable repository list")
+        repositories.extend(batch)
+        if len(batch) < 100:
+            break
+        page += 1
+    languages: dict[str, int] = {}
+    stars = 0
+    for repo in repositories:
+        if repo.get("fork") or repo.get("private"):
+            continue
+        stars += int(repo["stargazers_count"])
+        breakdown = api_json(f"/repos/{repo['full_name']}/languages")
+        if not isinstance(breakdown, dict) or any(type(n) is not int or n < 0 for n in breakdown.values()):
+            raise CollectionError("GitHub returned an unreadable language breakdown")
+        for language, size in breakdown.items():
+            languages[language] = languages.get(language, 0) + size
+
+    def count(kind: str, query: str) -> int:
+        result = api_json(f"/search/{kind}?" + urlencode({"q": query, "per_page": 1}))
+        if not isinstance(result, dict) or result.get("incomplete_results") or type(result.get("total_count")) is not int:
+            raise CollectionError(f"GitHub returned incomplete {kind} search results")
+        return result["total_count"]
+
+    metrics = {
+        "commits": count("commits", f"author:{login} is:public"),
+        "prs": count("issues", f"author:{login} type:pr is:public"),
+        "issues": count("issues", f"author:{login} type:issue is:public"),
+        "reviews": count("issues", f"reviewed-by:{login} -author:{login} type:pr is:public"),
+        "repos": int(profile["public_repos"]),
+        "stars": stars,
+        "followers": int(profile["followers"]),
+        "languages": dict(sorted(languages.items(), key=lambda item: (-item[1], item[0]))),
+    }
+    metrics["rank"] = activity_rank(metrics)
+    return metrics
+
+
+def activity_rank(metrics: dict[str, object]) -> str:
+    """Adapted from github-readme-stats (MIT); see docs/third-party-notices.md."""
+    exp = lambda value: 1 - 2 ** -value
+    log = lambda value: value / (1 + value)
+    score = 1 - (
+        2 * exp(int(metrics["commits"]) / 1000)
+        + 3 * exp(int(metrics["prs"]) / 50)
+        + exp(int(metrics["issues"]) / 25)
+        + exp(int(metrics["reviews"]) / 2)
+        + 4 * log(int(metrics["stars"]) / 50)
+        + log(int(metrics["followers"]) / 10)
+    ) / 12
+    for threshold, level in zip(
+        (1, 12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100),
+        ("S", "A+", "A", "A-", "B+", "B", "B-", "C+", "C"),
+    ):
+        if score * 100 <= threshold:
+            return level
+    return "C"
+
+
+THEMES = {
+    "light": {"background": "#ffffff", "border": "#d8dee6", "text": "#283b50", "muted": "#596b7e", "accent": "#5e83a8", "track": "#eaeef2", "cells": ("#edf0f4", "#cbdce8", "#a0bdd2", "#729bb9", "#4a789c")},
+    "dark": {"background": "#0d1117", "border": "#30363d", "text": "#d3dfec", "muted": "#a4b3c4", "accent": "#9dbbd6", "track": "#222c38", "cells": ("#1b2530", "#314858", "#4b6b80", "#7397ae", "#a8c7dc")},
+}
+LANGUAGE_COLORS = ("#779cb9", "#aa91b3", "#b79e83", "#87a89b", "#a4abc4", "#8c9ba7")
+
+
+def svg_shell(title: str, description: str, height: int, theme: str, content: str) -> str:
+    palette = THEMES[theme]
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 {height}" role="img" aria-labelledby="title desc">
+<title id="title">{html.escape(title)}</title>
 <desc id="desc">{html.escape(description)}</desc>
 <style>
-.title{{font:700 25px Arial,sans-serif;fill:#173F70;letter-spacing:.2px}}
-.subtitle{{font:14px Arial,sans-serif;fill:#436F9B;letter-spacing:.45px}}
-.month{{font:12px Arial,sans-serif;fill:#547795}}
-.count{{font:700 50px Arial,sans-serif;fill:#173F70}}
-.label{{font:700 13px Arial,sans-serif;fill:#436F9B;letter-spacing:.55px}}
-.micro{{font:12px Arial,sans-serif;fill:#547795}}
+text{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:{palette['text']}}}
+.heading{{font-size:19px;font-weight:600;letter-spacing:-.2px}}
+.label{{font-size:15px;fill:{palette['muted']}}}
+.small{{font-size:13px;fill:{palette['muted']}}}
+.value{{font-size:34px;font-weight:600;letter-spacing:-.6px}}
+.month{{font-size:13px;fill:{palette['muted']}}}
 </style>
-<rect x="1" y="1" width="1118" height="348" rx="22" fill="#FFFEFD" stroke="#D4E5F0" stroke-width="2"/>
-<path d="M28 12h214" stroke="#238BDF" stroke-width="6" stroke-linecap="round"/>
-<path d="M256 12h118" stroke="#E994C1" stroke-width="6" stroke-linecap="round"/>
-<text x="34" y="52" class="title">MY GITHUB RHYTHM ✨</text>
-<text x="36" y="77" class="subtitle">CONTRIBUTION CALENDAR · {year}</text>
-<text x="1080" y="49" text-anchor="end" class="micro">UPDATED {html.escape(refreshed.upper())}</text>
-{''.join(month_labels)}
-{''.join(squares)}
-<text x="36" y="247" class="label">MONTHLY CONTRIBUTIONS</text>
-<line x1="35" y1="306" x2="748" y2="306" stroke="#D4E5F0" stroke-width="1"/>
-{''.join(monthly_bars)}
-<line x1="790" y1="83" x2="790" y2="324" stroke="#D4E5F0" stroke-width="2"/>
-<text x="835" y="118" class="label">YEAR-TO-DATE</text>
-<text x="832" y="182" class="count">{total}</text>
-<text x="836" y="208" class="label">GITHUB CONTRIBUTIONS</text>
-<text x="836" y="231" class="micro">{year} · according to your profile calendar</text>
-<rect x="835" y="263" width="230" height="36" rx="18" fill="#EAF5FB"/>
-<circle cx="855" cy="281" r="5" fill="#4A9FE0"/>
-<circle cx="871" cy="281" r="5" fill="#E994C1"/>
-<text x="888" y="285" class="micro">Daily rhythm · monthly view</text>
+<rect x=".75" y=".75" width="958.5" height="{height-1.5}" rx="12" fill="{palette['background']}" stroke="{palette['border']}" stroke-width="1.5"/>
+{content}
 </svg>'''
+
+
+def timestamp_text(now: datetime) -> str:
+    return now.astimezone(TIMEZONE).strftime("%b %d, %H:%M %Z")
+
+
+def build_overview_svg(metrics: dict[str, object], snapshot: dict[str, object], now: datetime, theme: str) -> str:
+    p = THEMES[theme]
+    parts = [f'<text x="26" y="36" class="heading">Public GitHub activity</text>',
+             f'<text x="934" y="36" text-anchor="end" class="small">Updated {timestamp_text(now)}</text>']
+    items = [(snapshot["total"], "Contributions", str(snapshot["year"])),
+             (metrics["commits"], "Commits", "Public · all time"),
+             (metrics["prs"], "Pull requests", "Public · all time"),
+             (metrics["repos"], "Repositories", "Public")]
+    for index, (value, label, scope) in enumerate(items):
+        x = 28 + index * 178
+        parts.append(f'<text x="{x}" y="100" class="value">{value:,}</text><text x="{x}" y="128" class="label">{label}</text><text x="{x}" y="150" class="small">{scope}</text>')
+    parts.extend([
+        f'<line x1="751" y1="64" x2="751" y2="154" stroke="{p["border"]}"/>',
+        f'<circle cx="850" cy="103" r="37" fill="none" stroke="{p["accent"]}" stroke-width="3"/>',
+        f'<text x="850" y="115" text-anchor="middle" class="value">{metrics["rank"]}</text>',
+        '<text x="850" y="162" text-anchor="middle" class="small">Activity rank</text>',
+    ])
+    return svg_shell("Public GitHub activity", f"{snapshot['year']}: {snapshot['total']} contributions. {metrics['commits']} public commits, {metrics['prs']} pull requests, and {metrics['repos']} public repositories. Activity rank {metrics['rank']}.", 185, theme, "".join(parts))
+
+
+def streaks(snapshot: dict[str, object], today: date) -> tuple[int, int, int]:
+    days = snapshot["days"]
+    assert isinstance(days, dict)
+    counts = {date.fromisoformat(day): int(cell["count"]) for day, cell in days.items() if date.fromisoformat(day) <= today}
+    current = 0
+    start = today if counts.get(today, 0) else today.fromordinal(today.toordinal() - 1)
+    while counts.get(start, 0) > 0:
+        current += 1
+        start = start.fromordinal(start.toordinal() - 1)
+    longest = run = active = 0
+    for day, count in sorted(counts.items()):
+        if count > 0:
+            active += 1
+            run += 1
+            longest = max(longest, run)
+        else:
+            run = 0
+    return current, longest, active
+
+
+def build_svg(snapshot: dict[str, object], refreshed_at: datetime, theme: str = "light") -> str:
+    year = int(snapshot["year"])
+    days = snapshot["days"]
+    assert isinstance(days, dict)
+    today = refreshed_at.astimezone(TIMEZONE).date()
+    first_day = date(year, 1, 1)
+    first_sunday = first_day.toordinal() - ((first_day.weekday() + 1) % 7)
+    current, longest, active = streaks(snapshot, today)
+    p = THEMES[theme]
+    parts = [f'<text x="26" y="36" class="heading">Contribution activity · {year}</text>',
+             f'<text x="934" y="36" text-anchor="end" class="small">{active} active days</text>',
+             f'<text x="26" y="66" class="label">Current streak  {current} {"day" if current == 1 else "days"}</text>',
+             f'<text x="255" y="66" class="label">Longest streak  {longest} {"day" if longest == 1 else "days"} this year</text>']
+    for day_text, cell in sorted(days.items()):
+        day = date.fromisoformat(day_text)
+        col = (day.toordinal() - first_sunday) // 7
+        row = (day.weekday() + 1) % 7
+        x, y = 58 + col * 16, 109 + row * 16
+        level, count = int(cell["level"]), int(cell["count"])
+        opacity = '.35' if day > today else '1'
+        parts.append(f'<rect x="{x}" y="{y}" width="12" height="12" rx="2" fill="{p["cells"][level]}" opacity="{opacity}"><title>{day_text}: {count} contributions</title></rect>')
+        if day.day == 1:
+            parts.append(f'<text x="{x}" y="97" class="month">{day.strftime("%b")}</text>')
+    for label, row in (("Mon", 1), ("Wed", 3), ("Fri", 5)):
+        parts.append(f'<text x="26" y="{119+row*16}" class="small">{label}</text>')
+    parts.append('<text x="26" y="245" class="small">Daily contributions, as shown on GitHub</text>')
+    parts.append('<text x="772" y="245" class="small">Less</text>')
+    for i, color in enumerate(p["cells"]):
+        parts.append(f'<rect x="{810+i*16}" y="234" width="12" height="12" rx="2" fill="{color}"/>')
+    parts.append('<text x="897" y="245" class="small">More</text>')
+    return svg_shell(f"Contribution activity in {year}", f"{snapshot['total']} contributions in {year}. {active} active days; current streak {current} days; longest streak this year {longest} days. Updated {timestamp_text(refreshed_at)}.", 264, theme, "".join(parts))
+
+
+def build_languages_svg(metrics: dict[str, object], theme: str) -> str:
+    languages = metrics["languages"]
+    assert isinstance(languages, dict)
+    values = list(languages.items())
+    if len(values) > 6:
+        values = values[:5] + [("Other", sum(size for _, size in values[5:]))]
+    total = sum(size for _, size in values)
+    parts = ['<text x="26" y="36" class="heading">Languages in public repositories</text>',
+             '<text x="934" y="36" text-anchor="end" class="small">By source-code volume</text>',
+             '<defs><clipPath id="bar"><rect x="26" y="58" width="908" height="10" rx="5"/></clipPath></defs>']
+    offset = 26.0
+    for index, (language, size) in enumerate(values):
+        share = size / total if total else 0
+        width = 908 * share
+        color = LANGUAGE_COLORS[index]
+        parts.append(f'<rect x="{offset:.2f}" y="58" width="{width:.2f}" height="10" fill="{color}" clip-path="url(#bar)"/>')
+        x, y = 26 + index % 3 * 310, 97 + index // 3 * 29
+        parts.append(f'<circle cx="{x+5}" cy="{y-5}" r="4" fill="{color}"/><text x="{x+17}" y="{y}" class="label">{html.escape(language)}  {share*100:.1f}%</text>')
+        offset += width
+    if not total:
+        parts.append('<text x="26" y="98" class="label">No public language data available.</text>')
+    return svg_shell("Languages in public repositories", "; ".join(f"{name}: {size} bytes" for name, size in values) or "No public language data", 148, theme, "".join(parts))
 
 
 def write_atomic(path: Path, content: str) -> None:
@@ -208,13 +341,22 @@ def write_atomic(path: Path, content: str) -> None:
 def main() -> int:
     now = datetime.now(TIMEZONE)
     snapshot = fetch_calendar(now.year)
-    snapshot["login"] = LOGIN
-    snapshot["refreshed_at"] = now.isoformat(timespec="seconds")
-    data = json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n"
-    svg = build_svg(snapshot, now)
-    write_atomic(ROOT / "data/profile-activity.json", data)
-    write_atomic(ROOT / "assets/github-activity.svg", svg)
-    print(f"Updated {snapshot['total']} GitHub contributions for {snapshot['year']}.")
+    metrics = fetch_public_stats()
+    snapshot.update(login=LOGIN, refreshed_at=now.isoformat(timespec="seconds"))
+    payload = {"login": LOGIN, "refreshed_at": snapshot["refreshed_at"], "metrics": metrics}
+    # Collect and render everything before touching the last successful snapshot.
+    outputs = {
+        ROOT / "data/profile-activity.json": json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n",
+        ROOT / "data/github-stats.json": json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+    }
+    for theme in THEMES:
+        outputs[ROOT / f"assets/github-overview-{theme}.svg"] = build_overview_svg(metrics, snapshot, now, theme)
+        outputs[ROOT / f"assets/github-activity-{theme}.svg"] = build_svg(snapshot, now, theme)
+        outputs[ROOT / f"assets/github-languages-{theme}.svg"] = build_languages_svg(metrics, theme)
+    outputs[ROOT / "assets/github-activity.svg"] = build_svg(snapshot, now)
+    for path, content in outputs.items():
+        write_atomic(path, content)
+    print(f"Updated {snapshot['total']} contributions, {metrics['commits']} public commits, and {metrics['prs']} pull requests.")
     return 0
 
 
