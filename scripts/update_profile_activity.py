@@ -201,10 +201,10 @@ def activity_rank(metrics: dict[str, object]) -> str:
 
 
 THEMES = {
-    "light": {"background": "#ffffff", "border": "#d8dee6", "text": "#283b50", "muted": "#596b7e", "accent": "#5e83a8", "track": "#eaeef2", "cells": ("#edf0f4", "#cbdce8", "#a0bdd2", "#729bb9", "#4a789c")},
-    "dark": {"background": "#0d1117", "border": "#30363d", "text": "#d3dfec", "muted": "#a4b3c4", "accent": "#9dbbd6", "track": "#222c38", "cells": ("#1b2530", "#314858", "#4b6b80", "#7397ae", "#a8c7dc")},
+    "light": {"background": "#ffffff", "border": "#d7e4f4", "text": "#203858", "muted": "#536b88", "accent": "#1769d2", "track": "#e8f1fb", "cells": ("#edf3fb", "#c2e8f7", "#6ccdea", "#248dd4", "#c94b9a"), "metrics": ("#087da5", "#1769d2", "#b33580", "#7650bd")},
+    "dark": {"background": "#0d1117", "border": "#293d59", "text": "#dfebfa", "muted": "#a7bdd7", "accent": "#39c9f0", "track": "#17283f", "cells": ("#172338", "#174a70", "#0e86bb", "#29bbe5", "#f09acf"), "metrics": ("#39c9f0", "#75a8ff", "#f59bcf", "#bba0ff")},
 }
-LANGUAGE_COLORS = ("#779cb9", "#aa91b3", "#b79e83", "#87a89b", "#a4abc4", "#8c9ba7")
+LANGUAGE_COLORS = ("#23bce5", "#4b83f5", "#f17db9", "#aa83ef", "#41cdbd", "#7878ec")
 
 
 def svg_shell(title: str, description: str, height: int, theme: str, content: str) -> str:
@@ -214,13 +214,15 @@ def svg_shell(title: str, description: str, height: int, theme: str, content: st
 <desc id="desc">{html.escape(description)}</desc>
 <style>
 text{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;fill:{palette['text']}}}
-.heading{{font-size:19px;font-weight:600;letter-spacing:-.2px}}
+.heading{{font-size:19px;font-weight:600;letter-spacing:-.2px;fill:{palette["accent"]}}}
 .label{{font-size:15px;fill:{palette['muted']}}}
 .small{{font-size:13px;fill:{palette['muted']}}}
 .value{{font-size:34px;font-weight:600;letter-spacing:-.6px}}
 .month{{font-size:13px;fill:{palette['muted']}}}
 </style>
+<defs><linearGradient id="banner-accent"><stop stop-color="#23bce5"/><stop offset=".5" stop-color="#4b83f5"/><stop offset="1" stop-color="#f17db9"/></linearGradient></defs>
 <rect x=".75" y=".75" width="958.5" height="{height-1.5}" rx="12" fill="{palette['background']}" stroke="{palette['border']}" stroke-width="1.5"/>
+<path d="M14 1h932" stroke="url(#banner-accent)" stroke-width="2"/>
 {content}
 </svg>'''
 
@@ -239,11 +241,11 @@ def build_overview_svg(metrics: dict[str, object], snapshot: dict[str, object], 
              (metrics["repos"], "Repositories", "Public")]
     for index, (value, label, scope) in enumerate(items):
         x = 28 + index * 178
-        parts.append(f'<text x="{x}" y="100" class="value">{value:,}</text><text x="{x}" y="128" class="label">{label}</text><text x="{x}" y="150" class="small">{scope}</text>')
+        parts.append(f'<text x="{x}" y="100" class="value" style="fill:{p["metrics"][index]}">{value:,}</text><text x="{x}" y="128" class="label">{label}</text><text x="{x}" y="150" class="small">{scope}</text>')
     parts.extend([
         f'<line x1="751" y1="64" x2="751" y2="154" stroke="{p["border"]}"/>',
         f'<circle cx="850" cy="103" r="37" fill="none" stroke="{p["accent"]}" stroke-width="3"/>',
-        f'<text x="850" y="115" text-anchor="middle" class="value">{metrics["rank"]}</text>',
+        f'<text x="850" y="115" text-anchor="middle" class="value" style="fill:{p["accent"]}">{metrics["rank"]}</text>',
         '<text x="850" y="162" text-anchor="middle" class="small">Activity rank</text>',
     ])
     return svg_shell("Public GitHub activity", f"{snapshot['year']}: {snapshot['total']} contributions. {metrics['commits']} public commits, {metrics['prs']} pull requests, and {metrics['repos']} public repositories. Activity rank {metrics['rank']}.", 185, theme, "".join(parts))

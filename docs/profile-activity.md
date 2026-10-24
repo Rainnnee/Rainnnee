@@ -1,6 +1,6 @@
 # GitHub activity
 
-The README uses three cards: a public activity overview, the current year's contribution calendar, and public repository languages. All three share the same typography, spacing, and restrained blue-gray palette. Each has a light and dark version selected using GitHub's supported `<picture>` theme markup.
+The README uses three cards: a public activity overview, the current year's contribution calendar, and public repository languages. All three share the same typography, spacing, and banner-inspired cyan, blue, pink, and lavender accents on neutral backgrounds. Each has a light and dark version selected using GitHub's supported `<picture>` theme markup.
 
 ## Automatic refresh
 

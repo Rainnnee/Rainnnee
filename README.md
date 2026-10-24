@@ -38,16 +38,16 @@ I’m studying **Statistics & Data Science and Applied Mathematics at UCLA**. I�
 ## 🧰 Languages &amp; tools
 
 **Data &amp; machine learning**<br>
-<img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-46566B?style=flat-square&logo=pytorch&logoColor=C7D4E4"> <img alt="NumPy" src="https://img.shields.io/badge/NumPy-46566B?style=flat-square&logo=numpy&logoColor=C7D4E4"> <img alt="pandas" src="https://img.shields.io/badge/pandas-46566B?style=flat-square&logo=pandas&logoColor=C7D4E4"> <img alt="scikit-learn" src="https://img.shields.io/badge/scikit--learn-46566B?style=flat-square&logo=scikitlearn&logoColor=C7D4E4"> <img alt="ggplot2" src="https://img.shields.io/badge/ggplot2-46566B?style=flat-square&logoColor=C7D4E4">
+<img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-B64079?style=flat-square&logo=pytorch&logoColor=white"> <img alt="NumPy" src="https://img.shields.io/badge/NumPy-006D9A?style=flat-square&logo=numpy&logoColor=white"> <img alt="pandas" src="https://img.shields.io/badge/pandas-7146C8?style=flat-square&logo=pandas&logoColor=white"> <img alt="scikit-learn" src="https://img.shields.io/badge/scikit--learn-B64079?style=flat-square&logo=scikitlearn&logoColor=white"> <img alt="ggplot2" src="https://img.shields.io/badge/ggplot2-006D9A?style=flat-square&logoColor=white">
 
 **Programming &amp; statistical computing**<br>
-<img alt="Python" src="https://img.shields.io/badge/Python-46566B?style=flat-square&logo=python&logoColor=C7D4E4"> <img alt="Java" src="https://img.shields.io/badge/Java-46566B?style=flat-square&logo=openjdk&logoColor=C7D4E4"> <img alt="C++" src="https://img.shields.io/badge/C%2B%2B-46566B?style=flat-square&logo=cplusplus&logoColor=C7D4E4"> <img alt="R" src="https://img.shields.io/badge/R-46566B?style=flat-square&logo=r&logoColor=C7D4E4">
+<img alt="Python" src="https://img.shields.io/badge/Python-1769D2?style=flat-square&logo=python&logoColor=white"> <img alt="Java" src="https://img.shields.io/badge/Java-7650BD?style=flat-square&logo=openjdk&logoColor=white"> <img alt="C++" src="https://img.shields.io/badge/C%2B%2B-1769D2?style=flat-square&logo=cplusplus&logoColor=white"> <img alt="R" src="https://img.shields.io/badge/R-006D9A?style=flat-square&logo=r&logoColor=white">
 
 **Development tools**<br>
-<img alt="Git" src="https://img.shields.io/badge/Git-46566B?style=flat-square&logo=git&logoColor=C7D4E4"> <img alt="GitHub" src="https://img.shields.io/badge/GitHub-46566B?style=flat-square&logo=github&logoColor=C7D4E4"> <img alt="Linux" src="https://img.shields.io/badge/Linux-46566B?style=flat-square&logo=linux&logoColor=C7D4E4"> <img alt="Jupyter" src="https://img.shields.io/badge/Jupyter-46566B?style=flat-square&logo=jupyter&logoColor=C7D4E4"> <img alt="LaTeX" src="https://img.shields.io/badge/LaTeX-46566B?style=flat-square&logo=latex&logoColor=C7D4E4">
+<img alt="Git" src="https://img.shields.io/badge/Git-B64079?style=flat-square&logo=git&logoColor=white"> <img alt="GitHub" src="https://img.shields.io/badge/GitHub-3F58AB?style=flat-square&logo=github&logoColor=white"> <img alt="Linux" src="https://img.shields.io/badge/Linux-7650BD?style=flat-square&logo=linux&logoColor=white"> <img alt="Jupyter" src="https://img.shields.io/badge/Jupyter-B64079?style=flat-square&logo=jupyter&logoColor=white"> <img alt="LaTeX" src="https://img.shields.io/badge/LaTeX-007A8C?style=flat-square&logo=latex&logoColor=white">
 
 **Front-end experience**<br>
-<img alt="HTML5" src="https://img.shields.io/badge/HTML5-46566B?style=flat-square&logo=html5&logoColor=C7D4E4"> <img alt="CSS" src="https://img.shields.io/badge/CSS-46566B?style=flat-square&logo=css3&logoColor=C7D4E4"> <img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-46566B?style=flat-square&logo=javascript&logoColor=C7D4E4">
+<img alt="HTML5" src="https://img.shields.io/badge/HTML5-B64079?style=flat-square&logo=html5&logoColor=white"> <img alt="CSS" src="https://img.shields.io/badge/CSS-1769D2?style=flat-square&logo=css3&logoColor=white"> <img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-7650BD?style=flat-square&logo=javascript&logoColor=white">
 
 ## 📈 GitHub activity
 
@@ -73,5 +73,5 @@ I’m studying **Statistics & Data Science and Applied Mathematics at UCLA**. I�
 
 ## 📬 Connect
 
-<a href="https://www.linkedin.com/in/its-rain-piao-yay/"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-Connect-46566B?style=flat-square&logo=linkedin&logoColor=white"></a>
-<a href="https://rainnnee.github.io/rainpiao/#projects"><img alt="Project notes" src="https://img.shields.io/badge/Projects-Explore-46566B?style=flat-square&logo=githubpages&logoColor=white"></a>
+<a href="https://www.linkedin.com/in/its-rain-piao-yay/"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-Connect-1769D2?style=flat-square&logo=linkedin&logoColor=white"></a>
+<a href="https://rainnnee.github.io/rainpiao/#projects"><img alt="Project notes" src="https://img.shields.io/badge/Projects-Explore-B64079?style=flat-square&logo=githubpages&logoColor=white"></a>
