@@ -39,3 +39,5 @@ python3 scripts/update_profile_activity.py
 - [Awesome GitHub Profile README](https://github.com/abhisheknaiidu/awesome-github-profile-readme#tools): activity and language visualization ideas.
 - [GitHub Readme Stats](https://github.com/anuraghazra/github-readme-stats): activity rank formula.
 - [GitHub theme-aware image guidance](https://github.blog/developer-skills/github/how-to-make-your-images-in-markdown-on-github-adjust-for-dark-mode-and-light-mode/).
+
+Language charts use GitHub Linguist colors matched by language name, independently of rank or theme. The local color snapshot is in `data/language-colors.json`; unknown languages and Other use neutral gray.

@@ -10,6 +10,7 @@ on:
     paths:
       - README.md
       - scripts/update_profile_activity.py
+      - data/language-colors.json
       - tests/test_profile_activity.py
       - .github/workflows/update-profile-activity.yml
 

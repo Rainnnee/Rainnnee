@@ -83,6 +83,17 @@ class DashboardTests(unittest.TestCase):
                 self.assertNotIn("MY GITHUB RHYTHM", svg)
             self.assertIn("A&amp;B", activity.build_languages_svg(self.metrics, theme))
 
+    def test_language_colors_follow_names_when_order_changes(self):
+        for theme in activity.THEMES:
+            for languages in ({"Python": 60, "JavaScript": 40}, {"JavaScript": 60, "Python": 40}):
+                svg = activity.build_languages_svg({"languages": languages}, theme)
+                root = ET.fromstring(svg)
+                circles = root.findall("{http://www.w3.org/2000/svg}circle")
+                self.assertEqual([c.attrib["fill"] for c in circles],
+                                 [activity.LANGUAGE_COLORS[name] for name in languages])
+            unknown = activity.build_languages_svg({"languages": {"Unlisted language": 1}}, theme)
+            self.assertIn('fill="#8b949e"', unknown)
+
     def test_collect_failure_does_not_replace_previous_data(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

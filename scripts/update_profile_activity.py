@@ -204,7 +204,8 @@ THEMES = {
     "light": {"background": "#ffffff", "border": "#d7e4f4", "text": "#203858", "muted": "#536b88", "accent": "#1769d2", "track": "#e8f1fb", "cells": ("#edf3fb", "#c2e8f7", "#6ccdea", "#248dd4", "#c94b9a"), "metrics": ("#087da5", "#1769d2", "#b33580", "#7650bd")},
     "dark": {"background": "#0d1117", "border": "#293d59", "text": "#dfebfa", "muted": "#a7bdd7", "accent": "#39c9f0", "track": "#17283f", "cells": ("#172338", "#174a70", "#0e86bb", "#29bbe5", "#f09acf"), "metrics": ("#39c9f0", "#75a8ff", "#f59bcf", "#bba0ff")},
 }
-LANGUAGE_COLORS = ("#23bce5", "#4b83f5", "#f17db9", "#aa83ef", "#41cdbd", "#7878ec")
+# GitHub Linguist colors stay attached to names when repository rankings change.
+LANGUAGE_COLORS = json.loads((ROOT / "data/language-colors.json").read_text())
 
 
 def svg_shell(title: str, description: str, height: int, theme: str, content: str) -> str:
@@ -318,7 +319,7 @@ def build_languages_svg(metrics: dict[str, object], theme: str) -> str:
     for index, (language, size) in enumerate(values):
         share = size / total if total else 0
         width = 908 * share
-        color = LANGUAGE_COLORS[index]
+        color = LANGUAGE_COLORS.get(language, "#8b949e")
         parts.append(f'<rect x="{offset:.2f}" y="58" width="{width:.2f}" height="10" fill="{color}" clip-path="url(#bar)"/>')
         x, y = 26 + index % 3 * 310, 97 + index // 3 * 29
         parts.append(f'<circle cx="{x+5}" cy="{y-5}" r="4" fill="{color}"/><text x="{x+17}" y="{y}" class="label">{html.escape(language)}  {share*100:.1f}%</text>')
