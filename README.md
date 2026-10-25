@@ -4,7 +4,7 @@
 
 <p align="right"><sub>Artwork inspired by <a href="https://music.apple.com/us/album/piano-sessions-reflections/1700905900"><em>Piano Sessions: Reflections</em></a> (Xeuphoria × OneChilledPanda); original cover art by <a href="https://x.com/wacca005">wacca_わっか</a>.</sub></p>
 
-## 🌧️ My focus
+## 🌧️ About Me!
 
 I’m studying **Statistics & Data Science and Applied Mathematics at UCLA**. I’m interested in machine learning, computer vision, and statistical inference.
 
