@@ -18,6 +18,7 @@ I’m studying **Statistics & Data Science and Applied Mathematics at UCLA**. I�
 - **BruinML · CLIP and computer vision** — Studying training-free detection of small unfamiliar image regions with a five-person team. My work includes Python simulations across **225 combinations** of noise distributions, object geometries, and signal strengths to compare statistical detection methods.
 - **ACM AI @ UCLA · poker modeling** — Developing a transformer-based poker model with teammates to study player behavior from sequences of game states and actions. In progress.
 - **STATS 100A honors · conditional diffusion** — Planning a PyTorch study of Chinese-character images, focusing on recognizability, noise, and stroke complexity.
+- **PDF-to-MIDI · optical music recognition** — Planning a tool to turn printed sheet music PDFs into playable MIDI and editable MusicXML, with a review-and-correction workflow. Starting with piano and single-instrument scores.
 
 ## 🗂️ Public repositories
 
