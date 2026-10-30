@@ -1,9 +1,9 @@
 {
   "login": "Rainnnee",
-  "refreshed_at": "2026-10-29T18:55:50-07:00",
+  "refreshed_at": "2026-10-30T01:34:29-07:00",
   "metrics": {
-    "commits": 36,
-    "prs": 13,
+    "commits": 37,
+    "prs": 14,
     "issues": 0,
     "reviews": 0,
     "repos": 2,
@@ -11,9 +11,9 @@
     "followers": 1,
     "languages": {
       "Python": 81514,
-      "CSS": 53666,
-      "HTML": 47129,
-      "JavaScript": 16562
+      "CSS": 71498,
+      "HTML": 62727,
+      "JavaScript": 16800
     },
     "rank": "C"
   }
