@@ -41,3 +41,7 @@ python3 scripts/update_profile_activity.py
 - [GitHub theme-aware image guidance](https://github.blog/developer-skills/github/how-to-make-your-images-in-markdown-on-github-adjust-for-dark-mode-and-light-mode/).
 
 Language charts use GitHub Linguist colors matched by language name, independently of rank or theme. The local color snapshot is in `data/language-colors.json`; unknown languages and Other use neutral gray.
+
+Temporary GitHub HTTP errors (408, 429, 500, 502, 503, and 504) and connection timeouts are retried up to three total attempts, waiting two and then four seconds. Persistent failures still fail the job and preserve the last successful data and graphics. Authentication errors and malformed data are not silently accepted.
+
+In GitHub Actions, the contribution calendar comes from GitHub’s GraphQL API using the existing workflow token. It is requested in quarterly windows to keep queries small; dates, daily counts, and interval totals are validated before publishing. Future days remain empty. Local runs without a token retain the public HTML calendar reader.
