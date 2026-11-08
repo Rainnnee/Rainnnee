@@ -8,6 +8,9 @@ import json
 import os
 import re
 import tempfile
+import sys
+from time import sleep
+from urllib.error import HTTPError, URLError
 from datetime import date, datetime
 from html.parser import HTMLParser
 from pathlib import Path
@@ -106,12 +109,100 @@ def parse_contribution_calendar(document: str, year: int) -> dict[str, object]:
     return parser.snapshot(year)
 
 
+def read_github(request: Request) -> bytes:
+    """Retry temporary GitHub failures before giving up on the refresh."""
+    for attempt in range(3):
+        try:
+            with urlopen(request, timeout=30) as response:
+                return response.read()
+        except HTTPError as exc:
+            # Authentication, permissions, and missing resources need a real fix.
+            if exc.code not in {408, 429, 500, 502, 503, 504} or attempt == 2:
+                raise
+            reason = f"HTTP {exc.code}"
+            exc.close()
+        except (URLError, TimeoutError, ConnectionError) as exc:
+            if attempt == 2:
+                raise
+            reason = type(exc).__name__
+        delay = 2 ** (attempt + 1)
+        print(f"Temporary GitHub request failure ({reason}); retry {attempt + 1}/2 in {delay}s", file=sys.stderr)
+        sleep(delay)
+    raise AssertionError("unreachable")
+
+
+def fetch_api_calendar(year: int, login: str, today: date | None = None) -> dict[str, object]:
+    """Read bounded quarterly calendars through the authenticated public API."""
+    today = today or datetime.now(TIMEZONE).date()
+    first, end = date(year, 1, 1), min(date(year, 12, 31), today)
+    if end < first:
+        raise CollectionError("Cannot collect a future year's contribution calendar")
+    days = {date.fromordinal(n).isoformat(): {"level": 0, "count": 0}
+            for n in range(first.toordinal(), date(year, 12, 31).toordinal() + 1)}
+    levels = {"NONE": 0, "FIRST_QUARTILE": 1, "SECOND_QUARTILE": 2,
+              "THIRD_QUARTILE": 3, "FOURTH_QUARTILE": 4}
+    query = """query($login: String!, $from: DateTime!, $to: DateTime!) {
+      user(login: $login) {
+        contributionsCollection(from: $from, to: $to) {
+          contributionCalendar {
+            totalContributions
+            weeks { contributionDays { date contributionCount contributionLevel } }
+          }
+        }
+      }
+    }"""
+    total = 0
+    # Small queries stay below GitHub's contributionsCollection resource limits.
+    for month in (1, 4, 7, 10):
+        start = date(year, month, 1)
+        if start > end:
+            break
+        next_quarter = date(year + 1, 1, 1) if month == 10 else date(year, month + 3, 1)
+        stop = min(end, date.fromordinal(next_quarter.toordinal() - 1))
+        body = json.dumps({"query": query, "variables": {"login": login,
+            "from": f"{start.isoformat()}T00:00:00Z", "to": f"{stop.isoformat()}T23:59:59Z"}}).encode()
+        request = Request("https://api.github.com/graphql", data=body, headers={
+            "User-Agent": "Rainnnee-profile", "Content-Type": "application/json",
+            "Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}"})
+        try:
+            payload = json.loads(read_github(request))
+            if payload.get("errors"):
+                raise CollectionError("GitHub returned contribution API errors")
+            calendar = payload["data"]["user"]["contributionsCollection"]["contributionCalendar"]
+            period = {}
+            for week in calendar["weeks"]:
+                for cell in week["contributionDays"]:
+                    day = date.fromisoformat(cell["date"])
+                    if not start <= day <= stop:
+                        continue
+                    count = cell["contributionCount"]
+                    if type(count) is not int or count < 0 or day.isoformat() in period:
+                        raise CollectionError("GitHub returned invalid or duplicate contribution counts")
+                    level = levels[cell["contributionLevel"]]
+                    if (count == 0) != (level == 0):
+                        raise CollectionError("GitHub returned inconsistent contribution intensity")
+                    period[day.isoformat()] = {"count": count, "level": level}
+            expected = {date.fromordinal(n).isoformat()
+                        for n in range(start.toordinal(), stop.toordinal() + 1)}
+            observed = sum(cell["count"] for cell in period.values())
+            if set(period) != expected or type(calendar["totalContributions"]) is not int or observed != calendar["totalContributions"]:
+                raise CollectionError("GitHub's API calendar was incomplete or its total did not match")
+        except CollectionError:
+            raise
+        except Exception as exc:
+            raise CollectionError("Could not read the GitHub contribution API calendar") from exc
+        days.update(period)
+        total += observed
+    return {"year": year, "total": total, "days": days}
+
+
 def fetch_calendar(year: int, login: str = LOGIN) -> dict[str, object]:
+    if os.environ.get("GITHUB_TOKEN"):
+        return fetch_api_calendar(year, login)
     url = SOURCE_URL.format(login=login, year=year)
     request = Request(url, headers={"User-Agent": "Rainnnee-GitHub-profile/1.0", "Accept": "text/html"})
     try:
-        with urlopen(request, timeout=30) as response:
-            document = response.read().decode("utf-8")
+        document = read_github(request).decode("utf-8")
     except Exception as exc:
         raise CollectionError(f"Could not read the GitHub contribution calendar: {exc}") from exc
     return parse_contribution_calendar(document, year)
@@ -125,8 +216,7 @@ def api_json(path: str) -> object:
         headers["Authorization"] = f"Bearer {token}"
     request = Request("https://api.github.com" + path, headers=headers)
     try:
-        with urlopen(request, timeout=30) as response:
-            return json.load(response)
+        return json.loads(read_github(request))
     except Exception as exc:
         raise CollectionError(f"Could not read GitHub API resource {path.split('?')[0]}: {exc}") from exc
 
