@@ -17,13 +17,14 @@ I’m studying **Statistics & Data Science and Applied Mathematics at UCLA**. I�
 
 - **BruinML · CLIP and computer vision** — Studying training-free detection of small unfamiliar image regions with a five-person team. My work includes Python simulations across **225 combinations** of noise distributions, object geometries, and signal strengths to compare statistical detection methods.
 - **ACM AI @ UCLA · poker modeling** — Developing a transformer-based poker model with teammates to study player behavior from sequences of game states and actions. In progress.
-- **STATS 100A honors · conditional diffusion** — Planning a PyTorch study of Chinese-character images, focusing on recognizability, noise, and stroke complexity.
+- **[字生 (Zìshēng) · conditional diffusion](https://github.com/Rainnnee/zisheng)** — A runnable PyTorch pilot for my STATS 100A honors study, generating images of 12 Chinese characters with a class-conditioned diffusion model. Includes a saved checkpoint, sample gallery, and interactive reverse-diffusion sampler.
 - **PDF-to-MIDI · optical music recognition** — Planning a tool to turn printed sheet music PDFs into playable MIDI and editable MusicXML, with a review-and-correction workflow. Starting with piano and single-instrument scores.
 
 ## 🗂️ Public repositories
 
 | Repository | What you’ll find |
 | --- | --- |
+| [`zisheng`](https://github.com/Rainnnee/zisheng) | Chinese-character diffusion pilot, saved model, and interactive sampler. |
 | [`rainpiao`](https://github.com/Rainnnee/rainpiao) | Website source built with HTML, CSS, and JavaScript. |
 | [`Rainnnee`](https://github.com/Rainnnee/Rainnnee) | This README, the banner artwork, and scripts for the contribution calendar. |
 
